@@ -2,6 +2,7 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import NewTodo from './NewTodo'
+import TodoItem, { type Todo } from './TodoItem'
 
 export default async function Home() {
   const supabase = createServerComponentClient({ cookies })
@@ -12,13 +13,18 @@ export default async function Home() {
 
   if (!session) redirect('/unauthenticated')
 
-  const { data } = await supabase.from('todos').select()
+  const { data: todos }: { data: Todo[] | null } = await supabase
+    .from('todos')
+    .select()
+    .order('created_at')
 
   return (
     <>
       <h1 className="font-bold text-2xl">Hello, {session.user.email}</h1>
       <NewTodo />
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      {todos?.map((todo) => (
+        <TodoItem key={todo.id} item={todo} />
+      ))}
     </>
   )
 }

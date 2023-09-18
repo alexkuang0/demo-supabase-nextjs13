@@ -2,8 +2,8 @@ create table
   public.todos (
     id uuid not null default gen_random_uuid (),
     created_at timestamp with time zone not null default now(),
-    is_completed boolean null default false,
-    owner uuid null,
+    is_completed boolean not null default false,
+    owner uuid not null,
     content text not null,
     constraint todos_pkey primary key (id),
     constraint todos_owner_fkey foreign key (owner) references auth.users (id) on delete cascade
