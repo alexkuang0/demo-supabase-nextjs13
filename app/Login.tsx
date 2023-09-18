@@ -1,27 +1,26 @@
 'use client'
 
-import { createClient } from '@supabase/supabase-js'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
 
 const Login = () => {
   const router = useRouter()
+  const supabase = createClientComponentClient()
 
   async function handleSignUp() {
     await supabase.auth.signUp({
       email: process.env.NEXT_PUBLIC_TEST_USER_EMAIL!,
-      password: '12345678',
+      password: 'SupaStrongPassword@12345',
+      options: {
+        emailRedirectTo: `${location.origin}/auth/callback`,
+      },
     })
   }
 
   async function handleSignIn() {
     await supabase.auth.signInWithPassword({
       email: process.env.NEXT_PUBLIC_TEST_USER_EMAIL!,
-      password: '12345678',
+      password: 'SupaStrongPassword@12345',
     })
     router.refresh()
   }
