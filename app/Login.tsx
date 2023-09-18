@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 
 const Login = () => {
   const router = useRouter()
-  const supabase = createClientComponentClient()
+  const supabase = createClientComponentClient<Database>()
 
   async function handleSignUp() {
     await supabase.auth.signUp({

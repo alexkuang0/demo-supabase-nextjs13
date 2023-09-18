@@ -2,11 +2,10 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import NewTodo from './NewTodo'
-import { Todo } from './TodoItem'
 import RealtimeTodos from './RealtimeTodos'
 
 export default async function Home() {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = createServerComponentClient<Database>({ cookies })
 
   const {
     data: { session },
@@ -14,7 +13,7 @@ export default async function Home() {
 
   if (!session) redirect('/unauthenticated')
 
-  const { data: todos }: { data: Todo[] | null } = await supabase
+  const { data: todos } = await supabase
     .from('todos')
     .select()
     .order('created_at')
@@ -23,7 +22,7 @@ export default async function Home() {
     <>
       <h1 className="font-bold text-2xl">Hello, {session.user.email}</h1>
       <NewTodo />
-      <RealtimeTodos todos={todos} />
+      <RealtimeTodos todos={todos ?? []} />
     </>
   )
 }

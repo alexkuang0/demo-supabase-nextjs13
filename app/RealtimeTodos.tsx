@@ -1,16 +1,12 @@
 'use client'
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import TodoItem, { Todo } from './TodoItem'
+import TodoItem from './TodoItem'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
-type RealtimeTodosProps = {
-  todos: Todo[] | null
-}
-
-export default function RealtimeTodos({ todos }: RealtimeTodosProps) {
-  const supabase = createClientComponentClient()
+export default function RealtimeTodos({ todos }: { todos: Todo[] }) {
+  const supabase = createClientComponentClient<Database>()
   const router = useRouter()
 
   useEffect(() => {

@@ -3,14 +3,6 @@
 import { useRouter } from 'next/navigation'
 import { clsx } from 'clsx'
 
-export type Todo = {
-  id: string
-  created_at: string
-  is_completed: boolean
-  owner: string
-  content: string
-}
-
 type TodoProps = {
   item: Todo
 }
