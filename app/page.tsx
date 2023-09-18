@@ -2,7 +2,8 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import NewTodo from './NewTodo'
-import TodoItem, { type Todo } from './TodoItem'
+import { Todo } from './TodoItem'
+import RealtimeTodos from './RealtimeTodos'
 
 export default async function Home() {
   const supabase = createServerComponentClient({ cookies })
@@ -22,9 +23,7 @@ export default async function Home() {
     <>
       <h1 className="font-bold text-2xl">Hello, {session.user.email}</h1>
       <NewTodo />
-      {todos?.map((todo) => (
-        <TodoItem key={todo.id} item={todo} />
-      ))}
+      <RealtimeTodos todos={todos} />
     </>
   )
 }
