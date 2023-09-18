@@ -4,7 +4,7 @@ create table
     created_at timestamp with time zone not null default now(),
     is_completed boolean null default false,
     owner uuid null,
-    content text null,
+    content text not null,
     constraint todos_pkey primary key (id),
     constraint todos_owner_fkey foreign key (owner) references auth.users (id) on delete cascade
   ) tablespace pg_default;
@@ -16,7 +16,7 @@ AS PERMISSIVE FOR SELECT
 TO public
 USING (auth.uid() = owner);
 
-CREATE POLICY "allow write to read their own todos" ON "public"."todos"
+CREATE POLICY "allow users to write their own todos" ON "public"."todos"
 AS PERMISSIVE FOR INSERT
 TO public
 WITH CHECK (auth.uid() = owner);
